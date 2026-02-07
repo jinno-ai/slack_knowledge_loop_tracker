@@ -210,5 +210,5 @@ __marimo__/
 .serena/
 
 # AI Hub auto-generated directories and reports
-.audit/
+# .audit/ removed from gitignore to track audit history and improvement cycles
 .concept/

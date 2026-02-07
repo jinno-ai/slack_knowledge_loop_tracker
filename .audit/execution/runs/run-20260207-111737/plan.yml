@@ -1,0 +1,54 @@
+run_id: "20260207-111737"
+timestamp: "2026-02-07T11:17:37Z"
+audit_run_id: "20250207-120000"
+
+scope:
+  prs_to_apply:
+    - "PR-001"  # インストール手順の追加
+    - "PR-002"  # CONTRIBUTING.mdの作成
+    - "PR-003"  # テストカバレッジ計測の導入
+  prs_deferred:
+    - "PR-004"  # Slack SDKの導入（Phase 2, HIGH risk）
+    - "PR-005"  # Slack APIクライアントの実装（Phase 2）
+    - "PR-006"  # 環境変数設定の追加（Phase 2）
+    - "PR-007"  # Topic台帳のフォーマット定義（Phase 3）
+    - "PR-008"  # TopicLedgerクラスの実装（Phase 3）
+    - "PR-009"  # 類似度マッチングの改善（Phase 3）
+    - "PR-010"  # イベント集計モジュールの実装（Phase 4）
+    - "PR-011"  # レポート出力機能の追加（Phase 4）
+    - "PR-012"  # 簡易ダッシュボードの実装（Phase 4）
+
+success_criteria:
+  - id: "SC-001"
+    from: "intent.yml#quality_attributes[0]"
+    target: "テストカバレッジ >= 80%"
+    verification: "pytest --cov=src --cov-fail-under=80"
+    current_status: "未計測"
+
+  - id: "SC-002"
+    from: "core_functions"
+    target: "全Core Functionsが動作する"
+    verification: ".audit/verification/verify_core_functions.py"
+    current_status: "3/3 passed"
+
+  - id: "SC-003"
+    from: "documentation"
+    target: "インストール手順がREADMEにある"
+    verification: "README.mdにInstallationセクションが存在"
+    current_status: "未実装"
+
+  - id: "SC-004"
+    from: "documentation"
+    target: "CONTRIBUTING.mdが存在する"
+    verification: "CONTRIBUTING.mdが存在"
+    current_status: "未実装"
+
+rollback_trigger:
+  - "検証失敗（core_functions）"
+  - "既存テスト失敗"
+  - "ビルドエラー"
+
+budget:
+  max_prs_per_run: 5
+  max_file_changes_per_pr: 10
+  max_execution_minutes: 30

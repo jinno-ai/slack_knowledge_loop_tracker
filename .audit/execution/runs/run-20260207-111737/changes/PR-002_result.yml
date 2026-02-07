@@ -1,0 +1,23 @@
+pr_id: "PR-002"
+title: "CONTRIBUTING.mdの作成"
+status: "applied"
+applied_at: "2026-02-07T11:17:37Z"
+
+changes:
+  - file: "CONTRIBUTING.md"
+    action: "created"
+    lines_added: 58
+    lines_removed: 0
+
+verification:
+  test_result: "passed"
+  lint_result: "not_applicable"
+  build_result: "not_applicable"
+
+diff_file: "PR-002_applied.diff"
+rollback_command: "git apply -R .audit/execution/runs/run-20260207-111737/changes/PR-002_applied.diff"
+
+notes:
+  - "CONTRIBUTING.md を新規作成"
+  - "開発環境セットアップ・テスト実行方法・コードスタイルを記載"
+  - "新規コントリビューターのオンボーディングがスムーズになる"

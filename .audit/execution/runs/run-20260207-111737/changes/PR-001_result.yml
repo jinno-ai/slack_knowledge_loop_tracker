@@ -1,0 +1,22 @@
+pr_id: "PR-001"
+title: "インストール手順の追加"
+status: "applied"
+applied_at: "2026-02-07T11:17:37Z"
+
+changes:
+  - file: "README.md"
+    action: "modified"
+    lines_added: 35
+    lines_removed: 0
+
+verification:
+  test_result: "passed"
+  lint_result: "not_applicable"
+  build_result: "not_applicable"
+
+diff_file: "PR-001_applied.diff"
+rollback_command: "git apply -R .audit/execution/runs/run-20260207-111737/changes/PR-001_applied.diff"
+
+notes:
+  - "README.md にインストール手順と基本的な使い方を追加"
+  - "ユーザーが pip install から実行まで完結できるようになった"

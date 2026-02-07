@@ -1,0 +1,36 @@
+{
+  "run_id": "20260207-111737",
+  "timestamp": "2026-02-07T11:17:37Z",
+  "metrics": {
+    "test_coverage": 100.0,
+    "test_count": 8,
+    "test_pass_rate": 100.0,
+    "lint_errors": 0,
+    "core_function_pass_rate": 1.0,
+    "documentation_completeness": {
+      "has_installation_guide": false,
+      "has_contributing_guide": false,
+      "has_readme": true,
+      "has_system_constitution": true,
+      "has_purpose": true,
+      "has_agents": true
+    }
+  },
+  "core_function_results": [
+    {
+      "id": "CF-001",
+      "scenario_name": "SlackメッセージからA-Dイベントを抽出できる",
+      "passed": true
+    },
+    {
+      "id": "CF-002",
+      "scenario_name": "抽出結果をconfidence（信頼度）付きでJSON形式で出力できる",
+      "passed": true
+    },
+    {
+      "id": "CF-003",
+      "scenario_name": "既存Topic台帳との紐付けができる",
+      "passed": true
+    }
+  ]
+}
