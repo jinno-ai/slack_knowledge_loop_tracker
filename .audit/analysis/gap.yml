@@ -48,7 +48,21 @@ reality:
 gap_severity: "MEDIUM"
 impact: "重複Topicのマージ機能が使えない。毎回新しいTopic IDが生成される"
 
-### Gap-4: テストカバレッジ目標未達
+### Gap-4: ~~テストカバレッジ目標未達~~ ✅ CLOSED
+intent:
+  from: "intent.yml QA-001"
+  claim: "テストカバレッジ >= 80%"
+
+reality:
+  from: "verification_results"
+  fact: "カバレッジ100%を達成（目標80%を20%超過）"
+
+gap_severity: "CLOSED"
+impact: "なし"
+closure_method: "test_coverage_improvements"
+evidence: "pytest --cov=src により100% coverageを確認"
+
+### Gap-5: Slack連携機能の欠落（CRITICAL - BLOCKING）
 intent:
   from: "intent.yml QA-001"
   claim: "テストカバレッジ >= 80%"

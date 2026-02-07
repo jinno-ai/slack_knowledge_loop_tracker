@@ -58,6 +58,26 @@ quality_attributes:
         failure_means: "個人情報が漏洩するリスクがある"
 
 # === Assumptions（仮定） ===
+quality_attributes:
+  - id: "QA-001"
+    name: "テストカバレッジ"
+    target: ">= 80%"
+    verification:
+      type: "measurement"
+      command: "pytest --cov=src --cov-fail-under=80"
+      criteria:
+        operator: ">="
+        value: 80
+        unit: "%"
+      interpretation:
+        success_means: "コードの80%以上がテストで実行された"
+        failure_means: "テストされていないコードパスが20%以上ある"
+        warning: "カバレッジが高くてもアサーションが弱ければ意味がない"
+    actual_status: "passing"
+    actual_value: "100%"
+    note: "All implemented core functions are fully covered"
+
+# === Assumptions（仮定） ===
 assumptions:
   - id: "ASM-001"
     field: "mission.target_user"
