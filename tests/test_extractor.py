@@ -2,7 +2,6 @@
 Tests for EventExtractor
 """
 
-import pytest
 from datetime import datetime
 from src.extractor import EventExtractor
 from src.event import ADEvent

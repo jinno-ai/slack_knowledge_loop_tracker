@@ -30,13 +30,15 @@ class EventExtractor:
         self.confidence_calculator = ConfidenceCalculator()
         self.topic_id_generator = TopicIdGenerator()
 
-    def extract(self, messages: List[dict], existing_topics: Optional[List[str]] = None) -> List[ADEvent]:
+    def extract(
+        self, messages: List[dict], existing_topics: Optional[List[str]] = None
+    ) -> List[ADEvent]:
         """
         メッセージリストからA-Dイベントを抽出
 
         Args:
             messages: メッセージ辞書のリスト
-                     各辞書は "text", "url", "timestamp" キーを持つ必要がある
+                     各辞書は "text", "url", "timestamp" キーを持つ
             existing_topics: 既存のトピックIDリスト
 
         Returns:
