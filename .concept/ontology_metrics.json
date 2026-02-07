@@ -4,20 +4,34 @@
   "domain": 3,
   "aux": 5,
   "draft_ratio": 0.0,
-  "unmapped_ratio": 1.0,
+  "unmapped_ratio": 0.0,
   "queue_pending": 0,
   "conflicts_open": 0,
   "ambiguities_high": 0,
-  "decisions_lines": 28,
-  "claims_lines": 7,
-  "last_updated": "2026-02-07T23:59:00Z",
-  "last_run_id": "cycle-004",
+  "decisions_lines": 37,
+  "claims_lines": 9,
+  "last_updated": "2026-02-08T02:20:00Z",
+  "last_run_id": "cycle-005",
   "run_index": 11,
   "budget_status": "healthy",
   "budget_utilization": {
-    "total": 0.016,
-    "core": 0.062,
-    "domain": 0.015,
-    "aux": 0.01
+    "total": 0.162,
+    "core": 0.250,
+    "domain": 0.100,
+    "aux": 0.166
+  },
+  "limits": {
+    "total_terms_max": 80,
+    "core_max": 20,
+    "domain_max": 30,
+    "aux_max": 30,
+    "draft_ratio_max": 0.30,
+    "queue_pending_max": 30,
+    "decisions_lines_max": 200
+  },
+  "bloat_control_actions": {
+    "merged": 0,
+    "deleted": 0,
+    "deprecated": 0
   }
 }

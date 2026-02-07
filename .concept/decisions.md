@@ -1,28 +1,36 @@
 # Active AUTO Decisions (cache) — safe to delete
 
-*AUTO-GENERATED from ambiguities.yml.auto_decision and ontology.yml.assumptions*
-*Last updated: 2026-02-07T19:30:00Z (cycle-001)*
+*AUTO-GENERATED from ontology.yml.assumptions and ambiguities.yml.auto_decision*
+*Last updated: 2026-02-08T02:20:00Z (cycle-005)*
 
-## Initial Decisions
+## ASM-001: Term Queue Flow
+- **Decision Key**: CONCEPT_SYNC:term_queue_flow
+- **Status**: ACTIVE
+- **Chosen**: New canonical terms must go through term_queue.yml for review before being added to ontology
+- **Policy**: bloat_control + process_consistency
+- **Expires After Runs**: 50
+- **Linked Term**: TermQueue
+- **Revert Triggers**: primary_evidence_contradiction, security_risk
 
-### AUTO-001: charter.ymlの自動生成
-- **Milestone**: MS-002
-- **決定**: charter.ymlをREADME、SYSTEM_CONSTITUTION.md、PURPOSE.mdから推定して生成
-- **根拠**: 13_repo_autopilot.mdの指示に従い、Concept Sync v0.3システムを統合。プロジェクトの目的、非目標、成功条件、マイルストーンを文書化し、マイルストーン駆動の開発を可能にする
-- **状態**: applied
+## ASM-002: Decisions Cache
+- **Decision Key**: CONCEPT_SYNC:decisions_cache
+- **Status**: ACTIVE
+- **Chosen**: decisions.md is a cache file with 200 line limit. Source of truth is ambiguities.yml.auto_decision
+- **Policy**: bloat_control + cache_management
+- **Expires After Runs**: 50
+- **Linked Term**: DecisionsCache
+- **Revert Triggers**: primary_evidence_contradiction, system_redesign
 
-### AUTO-002: Ontologyの初期化
-- **Milestone**: MS-002
-- **決定**: SYSTEM_CONSTITUTION.mdとPURPOSE.mdからコア概念を抽出し、ontology.ymlを初期化
-- **根拠**: A-D状態遷移モデル、Knowledge Production Loop、ADEvent、ADEventExtractor等のコア概念を定義
-- **状態**: applied
-
-### AUTO-003: Invariantsの定義
-- **Milestone**: MS-002
-- **決定**: SYSTEM_CONSTITUTION.mdから6つの不変条件を抽出し、invariants.ymlを定義
-- **根拠**: 非点数化原則、不変のADモデル、PII保護、強制タグ付け禁止、ループ回転優先、charterが真実
-- **状態**: applied
+## ASM-003: Immutable AD Model
+- **Decision Key**: CONSTITUTION:immutable_AD_model
+- **Status**: ACTIVE
+- **Chosen**: A-D状態遷移モデルはSYSTEM_CONSTITUTION.md 2.1で定義されており、変更してはならない
+- **Policy**: constitution_invariant
+- **Expires After Runs**: 999
+- **Linked Term**: ADStateModel
+- **Revert Triggers**: constitution_amendment
 
 ---
 
-*このファイルはキャッシュです。200行を超えたら再生成してください。*
+*This file is a cache. The truth is in ambiguities.yml.auto_decision and ontology.yml.assumptions*
+*Limit: 200 lines. Regenerate from source if exceeded.*

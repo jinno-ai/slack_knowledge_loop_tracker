@@ -1,17 +1,22 @@
 # ontology_budget.yml
-# Budget limits and TTL for ontology management
+# Budget limits and TTL for ontology management (v0.3)
 
-version: "0.3"
-budget:
-  max_core_terms: 80
-  max_domain_terms: 200
-  max_aux_terms: 500
-  max_total_terms: 780
-  max_draft_ratio: 0.3
-  max_unmapped_ratio: 0.20
-  max_unmapped_count: 15
+limits:
+  total_terms_max: 80
+  core_max: 20
+  domain_max: 30
+  aux_max: 30
 
-ttl:
-  default_runs: 100
-  draft_runs: 50
-  aux_runs: 30
+ratios:
+  draft_ratio_max: 0.30
+  queue_pending_max: 30
+
+ttl_runs:
+  aux_delete: 10
+  draft_delete: 15
+  domain_deprecate: 20
+  queue_reject: 10
+
+merge:
+  similarity_merge_threshold: 0.78
+  similarity_review_threshold: 0.65
