@@ -1,2 +1,5 @@
-updated_at: null
-queue: []
+# term_queue.yml
+# New term review queue before ontology addition
+# Format: list of term proposals
+
+[]

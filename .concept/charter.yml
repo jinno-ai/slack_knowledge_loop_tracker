@@ -1,0 +1,134 @@
+version: "1.0"
+updated_at: "2026-02-07T19:30:00Z"
+# AUTO-GENERATED: 推定 - README、SYSTEM_CONSTITUTION.md、PURPOSE.mdに基づき生成
+
+product_goal:
+  north_star: "Slackの日次会話から「知識生産ループ（A→B→C→D）」を抽出し、チームの学習能力を可視化・加速する軽量フレームワークを構築する"
+  success_metrics:
+    - id: "MET-001"
+      name: "日次追跡可能性"
+      target: "日次で「新規A件数」「A→B件数」「滞留A年齢中央値」が追跡できている"
+    - id: "MET-002"
+      name: "ループ回転率"
+      target: "週1回のTopic統合（merge）が回っている"
+    - id: "MET-003"
+      name: "文化維持"
+      target: "チームが「書くこと」を負担に感じていない（Slackアクティビティ維持）"
+  non_goals:
+    - "人を評価・点数化するシステム（絶対にやらない）"
+    - "AI抽出精度を追求する研究プロジェクト（精度よりループ回転を優先）"
+    - "タグ付けを義務化する管理ツール（雑談文化を壊さない）"
+    - "人事評価・査定に使うシステム（ゲーム化を防ぐ）"
+
+milestones:
+  - id: "MS-001"
+    name: "初期セットアップ: A-Dイベント抽出器の実装"
+    intent: "SlackメッセージからA-Dイベントを抽出する最小限の実装を完成させる"
+    deliverables:
+      - "src/extractor.py: ADEventExtractorクラス"
+      - "tests/test_extractor.py: 基本的なテストスイート"
+      - "pyproject.toml: プロジェクト設定"
+    acceptance:
+      - type: "test"
+        target: "pytestがパスする"
+      - type: "invariant"
+        target: "INV-001: 人を点数化しない"
+    priority: "P0"
+    status: "done"
+    dependencies: []
+    risks:
+      - "抽出精度の低さが運用の障壁になる可能性"
+    evidence:
+      - "ADEventExtractorクラスが実装済み"
+      - "8つのテストケースが存在"
+      - "A/B/C/D各イベントタイプのパターンマッチング実装済み"
+
+  - id: "MS-002"
+    name: "Concept Syncシステム統合"
+    intent: "13_repo_autopilot.mdの指示に従い、Concept Sync v0.3システムをプロジェクトに統合する"
+    deliverables:
+      - ".concept/charter.yml: ゴール・マイルストーン定義"
+      - ".concept/autopilot.yml: 実行契約"
+      - ".concept/ontology.yml: コア概念定義"
+      - ".concept/invariants.yml: 不変条件"
+      - ".concept/decisions.md: AUTO決定キャッシュ"
+    acceptance:
+      - type: "invariant"
+        target: "INV-002: charter.ymlがプロジェクトの唯一の真実"
+    priority: "P0"
+    status: "active"
+    dependencies: ["MS-001"]
+    risks:
+      - "オントロジー肥大化（bloat）のリスク"
+    evidence:
+      - ".concept/ディレクトリ構造が存在"
+      - "ontology.yml, invariants.yml等のファイルが作成済み（中身は空）"
+
+  - id: "MS-003"
+    name: "Slack API連携とデータパイプライン構築"
+    intent: "Slack APIから日次スレッドを取得し、A-Dイベント抽出→Topic台帳更新→ダッシュボード出力のパイプラインを構築する"
+    deliverables:
+      - "Slack APIクライアント実装"
+      - "日次バッチ処理スクリプト"
+      - "Topic台帳（JSON/CSV）管理機能"
+      - "日次ダッシュボード（HTML/Markdown）生成"
+    acceptance:
+      - type: "test"
+        target: "Slack APIモックデータでエンドツーエンドテストがパス"
+      - type: "invariant"
+        target: "INV-003: PII（個人情報）をログに出さない"
+    priority: "P1"
+    status: "planned"
+    dependencies: ["MS-002"]
+    risks:
+      - "Slack API認証・レート制限の取り扱い"
+      - "機密情報の漏洩リスク"
+
+  - id: "MS-004"
+    name: "運用ドキュメント整備とチーム展開"
+    intent: "Slackテンプレート、週次マージ手順、トラブルシューティングを文書化し、チームへの展開を準備する"
+    deliverables:
+      - "推奨Slackテンプレートの文書化"
+      - "週次Topicマージ手順"
+      - "FAQ/トラブルシューティガイド"
+      - "オンボーディング資料"
+    acceptance:
+      - type: "invariant"
+        target: "INV-004: タグ付けは強制しない"
+    priority: "P2"
+    status: "planned"
+    dependencies: ["MS-003"]
+    risks:
+      - "チームへの文化定着の難しさ"
+      - "運用負荷が高すぎる場合の離脱リスク"
+
+  - id: "MS-005"
+    name: "継続的改善とフィードバックループ確立"
+    intent: "日次指標のモニタリング、月次レトロスペクティブ、ルール改善サイクルを確立する"
+    deliverables:
+      - "日次ダッシュボードの自動更新"
+      - "月次改善サイクルの手順"
+      - "指標トレンドの可視化"
+    acceptance:
+      - type: "metric"
+        target: "月1回のルール改善が実施されている"
+      - type: "invariant"
+        target: "INV-005: 精度よりループ回転を優先"
+    priority: "P1"
+    status: "planned"
+    dependencies: ["MS-003", "MS-004"]
+    risks:
+      - "改善サイクルが形骸化するリスク"
+
+work_policy:
+  default_mode: "commit"
+  iteration_budget:
+    max_cycles: 5
+    max_files_changed: 25
+    max_loc_add: 800
+    max_loc_del: 800
+  quality_gates:
+    must_pass: ["pytest"]
+  concept_policy:
+    concept_sync_version: "0.3"
+    bloat_is_failure: true

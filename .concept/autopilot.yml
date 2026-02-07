@@ -1,0 +1,19 @@
+version: "1.0"
+# AUTO-GENERATED: charter.ymlと矛盾しない最小雛形
+
+commands:
+  lint: "flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics"
+  test: "pytest -v"
+  format_check: "flake8 . --max-line-length=100"
+
+budget:
+  max_cycles: 5
+  max_files: 25
+  max_loc_add: 800
+  max_loc_del: 800
+
+mode: "commit"  # cycle-001: Initial Concept Sync setup
+
+quality_gates:
+  must_pass: ["pytest"]
+  optional: ["flake8"]

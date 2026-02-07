@@ -1,2 +1,5 @@
-updated_at: null
-conflicts: []
+# conflicts.yml
+# Conflicts between concepts, invariants, or decisions
+# Format: list of conflict entries
+
+[]

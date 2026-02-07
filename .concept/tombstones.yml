@@ -1,2 +1,5 @@
-updated_at: null
-tombstones: []
+# tombstones.yml
+# Deleted terms and their replacement terms
+# Format: list of tombstone entries
+
+[]

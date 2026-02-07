@@ -1,3 +1,102 @@
 version: "0.3"
-updated_at: null
-canonical_terms: {}
+updated_at: "2026-02-07T19:30:00Z"
+# AUTO-GENERATED: 初期オントロジー（SYSTEM_CONSTITUTION.md, PURPOSE.mdから抽出）
+
+core:
+  - term: "A-D状態遷移モデル"
+    category: "concept"
+    definition: "知識の4状態：A(Unknown)=未知・不確実性・懸念・仮説が新規に言語化された状態、B(Observation)=未知を潰すための観測に変換された状態、C(Verified)=観測により仮説が潰れた/強まった/否定された状態、D(Reused)=次回も回る形になった状態（自動化・テンプレ化）"
+    source: "SYSTEM_CONSTITUTION.md 2.1, AGENTS.md 2"
+    status: "active"
+    immutable: true
+
+  - term: "Knowledge Production Loop (KPL)"
+    category: "concept"
+    definition: "知識生産ループ。未知が表に出て、観測され、検証され、資産化されるサイクル"
+    source: "SYSTEM_CONSTITUTION.md 1, PURPOSE.md"
+    status: "active"
+    immutable: true
+
+  - term: "ADEvent"
+    category: "data_structure"
+    definition: "A-Dイベントを表すデータクラス。event_type, topic_id, message_text, message_url, timestamp, confidence, noteフィールドを持つ"
+    source: "src/extractor.py"
+    status: "active"
+
+  - term: "ADEventExtractor"
+    category: "tool"
+    definition: "SlackメッセージからA-Dイベントを抽出するクラス。パターンマッチングと信頼度算出機能を持つ"
+    source: "src/extractor.py"
+    status: "active"
+
+  - term: "charter"
+    category: "concept"
+    definition: "ゴール・非ゴール・成功指標・マイルストーンを定義する唯一の真実"
+    source: "13_repo_autopilot.md"
+    status: "active"
+
+domain:
+  - term: "Slack日次スレッド"
+    category: "data_source"
+    definition: "A-Dイベントの抽出元となる日常的なSlack会話。タグ付け（A/B/C/D）は任意"
+    source: "SYSTEM_CONSTITUTION.md Appendix, README.md"
+    status: "active"
+
+  - term: "Topic台帳"
+    category: "data_structure"
+    definition: "未知の状態管理のための台帳。topic_id, first_seen, last_updated, status, owner, next_action, age_daysフィールドを持つ"
+    source: "SYSTEM_CONSTITUTION.md 5.2"
+    status: "active"
+
+  - term: "Eventログ"
+    category: "data_structure"
+    definition: "A-Dイベントのログ。date, thread_url, event_type, topic_id, topic_title, message_url, author, confidence, noteフィールドを持つ"
+    source: "SYSTEM_CONSTITUTION.md 5.1"
+    status: "active"
+
+aux:
+  - term: "Constitution"
+    category: "invariant"
+    definition: "SYSTEM_CONSTITUTION.mdはプロジェクトの憲法であり、A-D状態遷移モデルと核心指標の定義は不変"
+    source: "SYSTEM_CONSTITUTION.md 2"
+    status: "active"
+
+  - term: "非点数化原則"
+    category: "invariant"
+    definition: "人を評価・点数化しない。これはチーム改善のためのシステム"
+    source: "SYSTEM_CONSTITUTION.md 1, AGENTS.md 1.1, PURPOSE.md 非目標"
+    status: "active"
+
+  - term: "bloat control"
+    category: "concept"
+    definition: "Concept Sync v0.3 mechanism to prevent ontology bloat through budget limits, TTL-based GC, and aggressive deletion"
+    source: "12_concept_sync_system"
+    status: "active"
+
+  - term: "decisions cache"
+    category: "concept"
+    definition: "decisions.md is a 200-line limit cache. Source of truth is ambiguities.yml.auto_decision"
+    source: "12_concept_sync_system"
+    status: "active"
+
+  - term: "term queue"
+    category: "concept"
+    definition: "term_queue.yml is the mandatory review pathway for new canonical terms before ontology addition"
+    source: "12_concept_sync_system"
+    status: "active"
+
+assumptions:
+  - id: "ASM-001"
+    text: "New canonical terms must go through term_queue.yml for review before being added to ontology"
+    decision_key: "CONCEPT_SYNC:term_queue_flow"
+    expires_after_runs: 50
+
+  - id: "ASM-002"
+    text: "decisions.md is a cache file with 200 line limit. Source of truth is ambiguities.yml.auto_decision"
+    decision_key: "CONCEPT_SYNC:decisions_cache"
+    expires_after_runs: 50
+
+  - id: "ASM-003"
+    text: "A-D状態遷移モデルはSYSTEM_CONSTITUTION.md 2.1で定義されており、変更してはならない"
+    decision_key: "CONSTITUTION:immutable_AD_model"
+    expires_after_runs: 999

@@ -1,1 +1,9 @@
-{}
+{
+  "total_terms": 9,
+  "core_terms": 5,
+  "domain_terms": 3,
+  "aux_terms": 5,
+  "unmapped_terms": 0,
+  "unmapped_ratio": 0.0,
+  "last_updated": "2026-02-07T19:30:00Z"
+}
