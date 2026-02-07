@@ -1,9 +1,14 @@
 {
-  "total_terms": 9,
-  "core_terms": 5,
-  "domain_terms": 3,
-  "aux_terms": 5,
-  "unmapped_terms": 0,
-  "unmapped_ratio": 0.0,
-  "last_updated": "2026-02-07T19:30:00Z"
+  "total_terms": 13,
+  "core": 5,
+  "domain": 3,
+  "aux": 5,
+  "draft_ratio": 0.0,
+  "unmapped_ratio": 1.0,
+  "queue_pending": 0,
+  "conflicts_open": 0,
+  "ambiguities_high": 0,
+  "decisions_lines": 28,
+  "claims_lines": 4,
+  "last_updated": "2026-02-07T20:30:03.571933"
 }
