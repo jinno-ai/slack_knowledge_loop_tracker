@@ -208,3 +208,7 @@ __marimo__/
 
 # Serena (AI coding assistant)
 .serena/
+
+# AI Hub auto-generated directories and reports
+.audit/
+.concept/

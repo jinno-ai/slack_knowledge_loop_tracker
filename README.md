@@ -31,6 +31,42 @@
 # 6. 月1回、ルールを1つだけ改善
 ```
 
+## インストール
+
+```bash
+# リポジトリのクローン
+git clone https://github.com/yourusername/slack_knowledge_loop_tracker.git
+cd slack_knowledge_loop_tracker
+
+# 依存関係のインストール
+pip install -e .
+
+# 開発用依存関係（テスト等）
+pip install -e ".[dev]"
+```
+
+## 基本的な使い方
+
+```python
+from src.extractor import EventExtractor
+
+# メッセージを準備
+messages = [
+    {
+        "text": "[A] この機能の仕様が不明です",
+        "url": "https://slack.com/archives/...",
+        "timestamp": "2025-02-07T10:00:00Z"
+    }
+]
+
+# イベントを抽出
+extractor = EventExtractor()
+events = extractor.extract(messages)
+
+for event in events:
+    print(f"[{event.event_type}] {event.message_text} (confidence: {event.confidence})")
+```
+
 ## Slackテンプレ（任意）
 
 ```
