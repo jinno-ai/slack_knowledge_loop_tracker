@@ -55,7 +55,9 @@ class EventExtractor:
 
         return events
 
-    def _extract_single(self, message: dict, existing_topics: List[str]) -> ADEvent | None:
+    def _extract_single(
+        self, message: dict, existing_topics: List[str]
+    ) -> ADEvent | None:
         """
         単一のメッセージからA-Dイベントを抽出
 
@@ -74,8 +76,12 @@ class EventExtractor:
         if not event_type:
             return None
 
-        topic_id = self.topic_id_generator.generate(message_text, existing_topics)
-        confidence = self.confidence_calculator.calculate(message_text, event_type)
+        topic_id = self.topic_id_generator.generate(
+            message_text, existing_topics
+        )
+        confidence = self.confidence_calculator.calculate(
+            message_text, event_type
+        )
 
         return ADEvent(
             event_type=event_type,
