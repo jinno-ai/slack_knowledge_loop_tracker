@@ -4,38 +4,16 @@ A-D Event Extractor
 SlackメッセージからA-Dイベントを抽出するクラス。
 """
 
-from dataclasses import dataclass
-from typing import List, Optional
 from datetime import datetime
-import re
+from typing import List, Optional
+
+from src.event import ADEvent
+from src.pattern_matcher import PatternMatcher
+from src.confidence_calculator import ConfidenceCalculator
+from src.topic_id_generator import TopicIdGenerator
 
 
-@dataclass
-class ADEvent:
-    """A-Dイベントを表すデータクラス"""
-
-    event_type: str  # "A", "B", "C", "D"
-    topic_id: str
-    message_text: str
-    message_url: str
-    timestamp: datetime
-    confidence: float  # 0.0 - 1.0
-    note: Optional[str] = None
-
-    def to_dict(self) -> dict:
-        """辞書形式に変換"""
-        return {
-            "event_type": self.event_type,
-            "topic_id": self.topic_id,
-            "message_text": self.message_text,
-            "message_url": self.message_url,
-            "timestamp": self.timestamp.isoformat(),
-            "confidence": self.confidence,
-            "note": self.note,
-        }
-
-
-class ADEventExtractor:
+class EventExtractor:
     """
     SlackメッセージからA-Dイベントを抽出するクラス
 
@@ -46,92 +24,15 @@ class ADEventExtractor:
     - D: 次回も回る形になった状態（自動化・テンプレ化）
     """
 
-    # A-Dイベントを示すキーワードパターン
-    PATTERNS = {
-        "A": [
-            r"不明", r"わからない", r"疑問", r"懸念",
-            r"仮説", r"もしかして", r"気になる", r"不安",
-            r"\?A\b", r"\[A\]", r"【A】"
-        ],
-        "B": [
-            r"試しに", r"テスト", r"計測", r"確認",
-            r"調べる", r"検証", r"測る", r"見る",
-            r"\?B\b", r"\[B\]", r"【B】"
-        ],
-        "C": [
-            r"わかった", r"判明", r"潰れた", r"否定",
-            r"正解", r"間違い", r"結果", r"ダメだった",
-            r"\?C\b", r"\[C\]", r"【C】"
-        ],
-        "D": [
-            r"自動化", r"テンプレ", r"再利用", r"資産化",
-            r"次回も", r"定型化", r"マニュアル",
-            r"\?D\b", r"\[D\]", r"【D】"
-        ],
-    }
-
     def __init__(self):
         """初期化"""
-        # パターンを正規表現オブジェクトにコンパイル
-        self.compiled_patterns = {
-            event_type: [re.compile(pattern) for pattern in patterns]
-            for event_type, patterns in self.PATTERNS.items()
-        }
+        self.pattern_matcher = PatternMatcher()
+        self.confidence_calculator = ConfidenceCalculator()
+        self.topic_id_generator = TopicIdGenerator()
 
-    def extract_from_message(
-        self,
-        message_text: str,
-        message_url: str,
-        timestamp: datetime,
-        existing_topics: Optional[List[str]] = None,
-    ) -> Optional[ADEvent]:
+    def extract(self, messages: List[dict], existing_topics: Optional[List[str]] = None) -> List[ADEvent]:
         """
-        単一のメッセージからA-Dイベントを抽出
-
-        Args:
-            message_text: Slackメッセージのテキスト
-            message_url: メッセージのURL
-            timestamp: メッセージのタイムスタンプ
-            existing_topics: 既存のトピックIDリスト（紐付け用）
-
-        Returns:
-            ADEventオブジェクト。イベントが見つからない場合はNone。
-        """
-        if existing_topics is None:
-            existing_topics = []
-
-        # 各イベントタイプでパターンマッチング
-        for event_type, patterns in self.compiled_patterns.items():
-            for pattern in patterns:
-                if pattern.search(message_text):
-                    # トピックIDの生成（既存トピックに紐付けなければ新規生成）
-                    topic_id = self._generate_topic_id(
-                        message_text, existing_topics
-                    )
-
-                    # 信頼度の算出
-                    confidence = self._calculate_confidence(
-                        message_text, event_type
-                    )
-
-                    return ADEvent(
-                        event_type=event_type,
-                        topic_id=topic_id,
-                        message_text=message_text,
-                        message_url=message_url,
-                        timestamp=timestamp,
-                        confidence=confidence,
-                    )
-
-        return None
-
-    def extract_from_messages(
-        self,
-        messages: List[dict],
-        existing_topics: Optional[List[str]] = None,
-    ) -> List[ADEvent]:
-        """
-        複数のメッセージからA-Dイベントを抽出
+        メッセージリストからA-Dイベントを抽出
 
         Args:
             messages: メッセージ辞書のリスト
@@ -146,66 +47,39 @@ class ADEventExtractor:
 
         events = []
         for message in messages:
-            event = self.extract_from_message(
-                message_text=message.get("text", ""),
-                message_url=message.get("url", ""),
-                timestamp=message.get("timestamp", datetime.now()),
-                existing_topics=existing_topics,
-            )
+            event = self._extract_single(message, existing_topics)
             if event:
                 events.append(event)
 
         return events
 
-    def _generate_topic_id(
-        self, message_text: str, existing_topics: List[str]
-    ) -> str:
+    def _extract_single(self, message: dict, existing_topics: List[str]) -> ADEvent | None:
         """
-        メッセージからトピックIDを生成または既存トピックに紐付け
+        単一のメッセージからA-Dイベントを抽出
 
         Args:
-            message_text: メッセージテキスト
+            message: メッセージ辞書
             existing_topics: 既存のトピックIDリスト
 
         Returns:
-            トピックID
+            ADEventオブジェクト。イベントが見つからない場合はNone。
         """
-        # 簡易実装: メッセージの先頭20文字をハッシュ化してトピックIDとする
-        # 実際の運用では、より高度な類似度マッチングが必要
-        import hashlib
+        message_text = message.get("text", "")
+        message_url = message.get("url", "")
+        timestamp = message.get("timestamp", datetime.now())
 
-        text_preview = message_text[:20].strip()
-        hash_obj = hashlib.md5(text_preview.encode())
-        return f"topic-{hash_obj.hexdigest()[:8]}"
+        event_type = self.pattern_matcher.match(message_text)
+        if not event_type:
+            return None
 
-    def _calculate_confidence(
-        self, message_text: str, event_type: str
-    ) -> float:
-        """
-        イベントの信頼度を算出
+        topic_id = self.topic_id_generator.generate(message_text, existing_topics)
+        confidence = self.confidence_calculator.calculate(message_text, event_type)
 
-        Args:
-            message_text: メッセージテキスト
-            event_type: イベントタイプ
-
-        Returns:
-            信頼度（0.0 - 1.0）
-        """
-        confidence = 0.5  # デフォルト値
-
-        # 明示的なタグ（[A], [B]等）があれば信頼度を高く
-        explicit_tags = [rf"\[{event_type}\]", rf"【{event_type}】"]
-        for tag in explicit_tags:
-            if re.search(tag, message_text):
-                confidence = 0.9
-                break
-
-        # 文脈キーワードの数で信頼度を調整
-        keyword_count = sum(
-            1
-            for pattern in self.PATTERNS[event_type]
-            if re.search(pattern, message_text)
+        return ADEvent(
+            event_type=event_type,
+            topic_id=topic_id,
+            message_text=message_text,
+            message_url=message_url,
+            timestamp=timestamp,
+            confidence=confidence,
         )
-        confidence += min(keyword_count * 0.05, 0.3)
-
-        return min(confidence, 1.0)

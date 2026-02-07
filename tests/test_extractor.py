@@ -1,99 +1,100 @@
 """
-Tests for ADEventExtractor
+Tests for EventExtractor
 """
 
 import pytest
 from datetime import datetime
-from src.extractor import ADEventExtractor, ADEvent
+from src.extractor import EventExtractor
+from src.event import ADEvent
 
 
-class TestADEventExtractor:
-    """ADEventExtractorのテストクラス"""
+class TestEventExtractor:
+    """EventExtractorのテストクラス"""
 
     def setup_method(self):
         """各テストメソッドの前に実行"""
-        self.extractor = ADEventExtractor()
+        self.extractor = EventExtractor()
 
     def test_extract_type_a_event(self):
         """タイプAイベントの抽出テスト"""
-        message_text = "この機能の仕様が不明です。もしかしてバグ？"
-        message_url = "https://slack.com/archives/ABC123/p1234567890"
-        timestamp = datetime.now()
+        message = {
+            "text": "この機能の仕様が不明です。もしかしてバグ？",
+            "url": "https://slack.com/archives/ABC123/p1234567890",
+            "timestamp": datetime.now(),
+        }
 
-        event = self.extractor.extract_from_message(
-            message_text, message_url, timestamp
-        )
+        events = self.extractor.extract([message])
 
-        assert event is not None
-        assert event.event_type == "A"
-        assert event.message_text == message_text
-        assert event.message_url == message_url
-        assert event.confidence > 0.0
+        assert len(events) == 1
+        assert events[0].event_type == "A"
+        assert events[0].message_text == message["text"]
+        assert events[0].message_url == message["url"]
+        assert events[0].confidence > 0.0
 
     def test_extract_type_b_event(self):
         """タイプBイベントの抽出テスト"""
-        message_text = "試しにテストコードを書いて確認します"
-        message_url = "https://slack.com/archives/ABC123/p1234567890"
-        timestamp = datetime.now()
+        message = {
+            "text": "試しにテストコードを書いて確認します",
+            "url": "https://slack.com/archives/ABC123/p1234567890",
+            "timestamp": datetime.now(),
+        }
 
-        event = self.extractor.extract_from_message(
-            message_text, message_url, timestamp
-        )
+        events = self.extractor.extract([message])
 
-        assert event is not None
-        assert event.event_type == "B"
+        assert len(events) == 1
+        assert events[0].event_type == "B"
 
     def test_extract_type_c_event(self):
         """タイプCイベントの抽出テスト"""
-        message_text = "わかった！問題はここだった"
-        message_url = "https://slack.com/archives/ABC123/p1234567890"
-        timestamp = datetime.now()
+        message = {
+            "text": "わかった！問題はここだった",
+            "url": "https://slack.com/archives/ABC123/p1234567890",
+            "timestamp": datetime.now(),
+        }
 
-        event = self.extractor.extract_from_message(
-            message_text, message_url, timestamp
-        )
+        events = self.extractor.extract([message])
 
-        assert event is not None
-        assert event.event_type == "C"
+        assert len(events) == 1
+        assert events[0].event_type == "C"
 
     def test_extract_type_d_event(self):
         """タイプDイベントの抽出テスト"""
-        message_text = "次回も回るようにテンプレート化しました"
-        message_url = "https://slack.com/archives/ABC123/p1234567890"
-        timestamp = datetime.now()
+        message = {
+            "text": "次回も回るようにテンプレート化しました",
+            "url": "https://slack.com/archives/ABC123/p1234567890",
+            "timestamp": datetime.now(),
+        }
 
-        event = self.extractor.extract_from_message(
-            message_text, message_url, timestamp
-        )
+        events = self.extractor.extract([message])
 
-        assert event is not None
-        assert event.event_type == "D"
+        assert len(events) == 1
+        assert events[0].event_type == "D"
 
     def test_extract_with_explicit_tag(self):
         """明示的なタグ[A][B][C][D]のテスト"""
-        message_text = "[A] パフォーマンスが気になる"
-        message_url = "https://slack.com/archives/ABC123/p1234567890"
-        timestamp = datetime.now()
+        message = {
+            "text": "[A] パフォーマンスが気になる",
+            "url": "https://slack.com/archives/ABC123/p1234567890",
+            "timestamp": datetime.now(),
+        }
 
-        event = self.extractor.extract_from_message(
-            message_text, message_url, timestamp
-        )
+        events = self.extractor.extract([message])
 
-        assert event is not None
-        assert event.event_type == "A"
-        assert event.confidence >= 0.9  # 明示的なタグは信頼度が高い
+        assert len(events) == 1
+        assert events[0].event_type == "A"
+        assert events[0].confidence >= 0.9  # 明示的なタグは信頼度が高い
 
     def test_no_event_extracted(self):
         """イベントが抽出されないテスト"""
-        message_text = "ただの雑文です。A-Dに関係ない会話。"
-        message_url = "https://slack.com/archives/ABC123/p1234567890"
-        timestamp = datetime.now()
+        message = {
+            "text": "ただの雑文です。A-Dに関係ない会話。",
+            "url": "https://slack.com/archives/ABC123/p1234567890",
+            "timestamp": datetime.now(),
+        }
 
-        event = self.extractor.extract_from_message(
-            message_text, message_url, timestamp
-        )
+        events = self.extractor.extract([message])
 
-        assert event is None
+        assert len(events) == 0
 
     def test_extract_from_multiple_messages(self):
         """複数メッセージからの抽出テスト"""
@@ -115,9 +116,9 @@ class TestADEventExtractor:
             },
         ]
 
-        events = self.extractor.extract_from_messages(messages)
+        events = self.extractor.extract(messages)
 
-        assert len(events) >= 1  # 少なくとも1つは抽出される
+        assert len(events) >= 2  # 少なくとも2つは抽出される
 
     def test_event_to_dict(self):
         """ADEventの辞書変換テスト"""
