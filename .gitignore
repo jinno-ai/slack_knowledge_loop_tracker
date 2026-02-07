@@ -36,20 +36,10 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
+# Coverage reports
+coverage.json
 .coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py.cover
-.hypothesis/
-.pytest_cache/
-cover/
+htmlcov/
 
 # Translations
 *.mo
@@ -210,5 +200,8 @@ __marimo__/
 .serena/
 
 # AI Hub auto-generated directories and reports
-# .audit/ removed from gitignore to track audit history and improvement cycles
+.audit/
 .concept/
+
+# Test cache and reports
+.pytest_cache/
