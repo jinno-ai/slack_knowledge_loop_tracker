@@ -201,7 +201,8 @@ __marimo__/
 
 # AI Hub auto-generated directories and reports
 .audit/
-.concept/
+# Track .concept Source-of-Truth, ignore heavy archives
+.concept/archive/
 
 # Test cache and reports
 .pytest_cache/

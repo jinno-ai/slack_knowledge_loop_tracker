@@ -9,14 +9,14 @@
   "conflicts_open": 0,
   "ambiguities_high": 0,
   "decisions_lines": 28,
-  "claims_lines": 4,
-  "last_updated": "2026-02-07T21:00:00Z",
+  "claims_lines": 6,
+  "last_updated": "2026-02-07T21:30:00Z",
   "last_run_id": "cycle-003",
   "run_index": 3,
   "budget_status": "healthy",
   "budget_utilization": {
-    "total": 0.017,
-    "core": 0.063,
+    "total": 0.016,
+    "core": 0.062,
     "domain": 0.015,
     "aux": 0.01
   }
