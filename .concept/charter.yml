@@ -56,13 +56,17 @@ milestones:
       - type: "invariant"
         target: "INV-002: charter.ymlがプロジェクトの唯一の真実"
     priority: "P0"
-    status: "active"
+    status: "done"
     dependencies: ["MS-001"]
     risks:
       - "オントロジー肥大化（bloat）のリスク"
     evidence:
-      - ".concept/ディレクトリ構造が存在"
-      - "ontology.yml, invariants.yml等のファイルが作成済み（中身は空）"
+      - ".concept/ディレクトリ構造が完全に実装済み"
+      - "charter.ymlに5つのマイルストーン定義完了"
+      - "ontology.ymlにコア概念5件、ドメイン概念3件、補助概念4件定義済み"
+      - "invariants.ymlに6つの不変条件定義完了"
+      - "decisions.mdに3つのAUTO決定キャッシュ生成"
+      - "autopilot.ymlに実行契約定義完了"
 
   - id: "MS-003"
     name: "Slack API連携とデータパイプライン構築"
