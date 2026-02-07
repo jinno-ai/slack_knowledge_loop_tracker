@@ -10,5 +10,14 @@
   "ambiguities_high": 0,
   "decisions_lines": 28,
   "claims_lines": 4,
-  "last_updated": "2026-02-07T20:30:03.571933"
+  "last_updated": "2026-02-07T20:46:00Z",
+  "last_run_id": "cycle-002",
+  "run_index": 2,
+  "budget_status": "healthy",
+  "budget_utilization": {
+    "total": 0.017,
+    "core": 0.063,
+    "domain": 0.015,
+    "aux": 0.01
+  }
 }
