@@ -1,0 +1,85 @@
+version: "2.0"
+updated_at: "2025-02-07T12:00:00Z"
+updated_by: "audit-run-20250207-120000"
+
+# === Mission ===
+mission:
+  target_user: "チーム開発者・組織改善担当者"
+  provided_value: "Slackの日次会話から知識生産ループ（A-D）を可視化し、チームの学習能力を底上げする"
+  desired_state: "未知（A）が日常的に表出し、A→B→C→Dの状態遷移が円滑に回る状態"
+
+# === Core Functions (本質的機能) ===
+core_functions:
+  - id: "CF-001"
+    claim: "SlackメッセージからA-Dイベントを抽出できる"
+    source: "README.md:13, src/extractor.py:14"
+    testable: true
+
+  - id: "CF-002"
+    claim: "抽出結果をconfidence（信頼度）付きでJSON形式で出力できる"
+    source: "src/event.py:27, AGENTS.md:62"
+    testable: true
+
+  - id: "CF-003"
+    claim: "既存Topic台帳との紐付けができる"
+    source: "src/topic_id_generator.py:15, SYSTEM_CONSTITUTION.md:96"
+    testable: true
+
+  - id: "CF-004"
+    claim: "日次指標（新規A件数、A→B件数、滞留A中央値）を追跡できる"
+    source: "SYSTEM_CONSTITUTION.md:48, PURPOSE.md:28"
+    testable: false  # 未実装
+
+# === Quality Attributes ===
+quality_attributes:
+  - id: "QA-001"
+    name: "テストカバレッジ"
+    target: ">= 80%"
+    verification:
+      type: "measurement"
+      command: "pytest --cov=src --cov-fail-under=80"
+      criteria:
+        operator: ">="
+        value: 80
+        unit: "%"
+      interpretation:
+        success_means: "コードの80%以上がテストで実行された"
+        failure_means: "テストされていないコードパスが20%以上ある"
+        warning: "カバレッジが高くてもアサーションが弱ければ意味がない"
+
+  - id: "QA-002"
+    name: "PII（個人情報）保護"
+    target: "ログに出力しない"
+    verification:
+      type: "code_review"
+      criteria: "Slackメッセージの生データがログ/例外に出力されない"
+      interpretation:
+        success_means: "PIIが適切にマスキングまたは除外されている"
+        failure_means: "個人情報が漏洩するリスクがある"
+
+# === Assumptions（仮定） ===
+assumptions:
+  - id: "ASM-001"
+    field: "mission.target_user"
+    value: "Slackを利用する5-50人の開発チーム"
+    reason: "README.mdから推測。日次会話という文脈から中小規模チームを想定"
+    confidence: "medium"
+
+  - id: "ASM-002"
+    field: "quality_attributes.target_coverage"
+    value: "80%"
+    reason: "一般的なOSS基準を適用"
+    confidence: "medium"
+
+  - id: "ASM-003"
+    field: "core_functions.CF-004"
+    value: "現在未実装。実装にはダッシュボード/集計機能が必要"
+    reason: "コードベースに集計ロジックが存在しない"
+    confidence: "high"
+
+# === Non-Goals ===
+non_goals:
+  - "人を評価・点数化するシステム"
+  - "AI抽出精度を追求する研究プロジェクト"
+  - "タグ付けを義務化する管理ツール"
+  - "人事評価・査定に使うシステム"

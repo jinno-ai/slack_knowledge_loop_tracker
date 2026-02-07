@@ -1,0 +1,17 @@
+# Budget Constraints for Audit Execution
+version: "1.0"
+
+scan_budget:
+  max_files_per_run: 100
+  max_total_tokens: 50000
+
+log_budget:
+  max_log_entries: 500
+  keep_last_n_entries: 300
+
+proposal_budget:
+  max_prs_per_run: 5
+
+verification_budget:
+  max_test_scenarios: 10
+  max_execution_time_seconds: 300

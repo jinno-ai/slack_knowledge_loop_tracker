@@ -1,0 +1,35 @@
+[
+  {
+    "function_id": "CF-001",
+    "scenario_name": "SlackメッセージからA-Dイベントを抽出できる",
+    "passed": true,
+    "actual_output": "4 events extracted",
+    "expected_output": ">=4 events",
+    "interpretation": "A-Dイベントが正しく抽出されている"
+  },
+  {
+    "function_id": "CF-002",
+    "scenario_name": "抽出結果をconfidence（信頼度）付きでJSON形式で出力できる",
+    "passed": true,
+    "actual_output": {
+      "event_type": "A",
+      "topic_id": "topic-f8141f58",
+      "message_text": "[A] パフォーマンスが気になる",
+      "message_url": "https://slack.com/archives/ABC123/p1234567890",
+      "timestamp": "2026-02-07T19:55:21.683350",
+      "confidence": 1.0,
+      "note": null
+    },
+    "expected_output": "confidence >= 0.9, all required fields present",
+    "interpretation": "明示的なタグ[A]に対して高い信頼度（>=0.9）が付与されている / 必須フィールドが全て含まれている"
+  },
+  {
+    "function_id": "CF-003",
+    "scenario_name": "既存Topic台帳との紐付けができる",
+    "passed": true,
+    "actual_output": "2 events with topic_ids",
+    "expected_output": "2 events with topic_ids",
+    "interpretation": "Topic IDが生成されている（現状はハッシュベースなので異なるメッセージには異なるIDが付与される）",
+    "note": "将来的には類似度マッチングで同じトピックのメッセージを紐付ける必要がある"
+  }
+]
